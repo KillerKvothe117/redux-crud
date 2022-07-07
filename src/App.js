@@ -1,13 +1,13 @@
 import "./App.css";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addUser, deleteUser } from "./features/users";
+import { addUser, deleteUser, updateUsername } from "./features/users";
 import uuid from "react-uuid";
 
 function App() {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
-  
+  const [newUsername, setNewUsername] = useState("");
 
   const userList = useSelector((state) => state.users.value);
   const dispatch = useDispatch();
@@ -43,8 +43,20 @@ function App() {
             <div>
               <h1>{user.name}</h1>
               <h1>{user.username}</h1>
-              <input type="text" placeholder="New username..." />
-              <button>Update Username</button>
+              <input
+                type="text"
+                placeholder="New username..."
+                onChange={(e) => setNewUsername(e.target.value)}
+              />
+              <button
+                onClick={() => {
+                  dispatch(
+                    updateUsername({ id: user.id, username: newUsername })
+                  );
+                }}
+              >
+                Update Username
+              </button> 
               <button
                 onClick={() => {
                   dispatch(deleteUser({ id: user.id }));
